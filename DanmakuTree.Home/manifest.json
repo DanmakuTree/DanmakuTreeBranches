@@ -6,7 +6,7 @@
   "version": "0.0.1",
   "type": 0,
   "externalWindow": "./embed.vue",
-  "permission": [
+  "permissions": [
     "0"
   ]
 }

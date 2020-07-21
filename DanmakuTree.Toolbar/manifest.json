@@ -1,0 +1,22 @@
+{
+  "$schema": "https://raw.githubusercontent.com/DanmakuTree/DanmakuTreeTool/master/manifest.schema.json",
+  "id": "ce68d480-a08b-4678-a547-65a510083410",
+  "name": "快速弹幕栏",
+  "description": "可以快速发送弹幕的悬浮窗口",
+  "preview": [],
+  "version": "0.0.1",
+  "type": 0,
+  "embed": "./embed.vue",
+  "externalWindow": "./externalWindow.vue",
+  "externalWindowOption": {
+    "only": true,
+    "transparent": true,
+    "backgroundColor": "#00FFFFFF",
+    "hasShadow": false,
+    "width": 320,
+    "height": 80
+  },
+  "permissions": [
+    "Platform.BiliBili.API.sendRoomMessage"
+  ]
+}
