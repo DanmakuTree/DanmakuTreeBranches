@@ -14,7 +14,11 @@
     "backgroundColor": "#00FFFFFF",
     "hasShadow": false,
     "width": 320,
-    "height": 80
+    "height": 80,
+    "frameless": true,
+    "skipTaskbar": true,
+    "alwaysOnTop": true,
+    "resizable": false
   },
   "permissions": [
     "Platform.BiliBili.API.sendRoomMessage"

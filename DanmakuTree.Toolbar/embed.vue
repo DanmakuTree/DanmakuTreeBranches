@@ -2,6 +2,7 @@
   <div class="container">
     <a-button @click="openWindow">1234</a-button>
     <a-button @click="requestQuickLink">2222</a-button>
+    <a-input placeholder="Basic usage" v-model="dModuleConfig.backgroundColor"/>
   </div>
 </template>
 
