@@ -18,14 +18,18 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-    - uses: actions/checkout@v2
     - name: Setup Node.js environment
       uses: actions/setup-node@v2.1.1
-    - uses: actions/checkout@v2
+    - name: Get DanmakuTreeTool
+      uses: actions/checkout@v2
       with:
-        repository: shugen002/DanmakuTreeBackend
-        token: ${{ secrets.GH_TOKEN }}
+        repository: DanmakuTree/DanmakuTreeTool
+    - name: Install DanmakuTreeTool
+      run: npm i -g
+    - name: Get Repository
+      uses: actions/checkout@v2
+    - name: Build Modules
+      run: danmakutreetool build
     - run: ls .
     - run: ls ..
     - run: ls ../..
