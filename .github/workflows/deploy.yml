@@ -24,15 +24,17 @@ jobs:
       uses: actions/checkout@v2
       with:
         repository: DanmakuTree/DanmakuTreeTool
-        path: ../DanmakuTreeTool 
+        path: ./DanmakuTreeTool
+    - run: cd ./DanmakuTreeTool
     - name: Install DanmakuTreeTool
       run: npm i
+    - run: cd ..
     - name: Get Repository
       uses: actions/checkout@v2
-    - name: Install node_modules
-      run: npm i
-    # - name: Build Modules
-    #   run: node ../DanmakuTreeTool/src/index.js build
-    - run: ls .
-    - run: ls ..
-    - run: ls ../..
+      with: 
+        path: ./DanmakuTreeBranches
+    - run: cd ./DanmakuTreeBranches
+    - run: npm i
+    - run: node ../DanmakuTreeTool/src/index.js build
+    - run: ls
+    - run: ls dist
