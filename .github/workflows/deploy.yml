@@ -27,7 +27,7 @@ jobs:
     - name: Install DanmakuTreeTool
       run: npm i DanmakuTree/DanmakuTreeTool
     - name: Build Modules
-      run: danmakutreetool build
+      run: npm run build
     - run: ls .
     - run: ls ..
     - run: ls ../..
