@@ -25,7 +25,10 @@ jobs:
       with:
         repository: DanmakuTree/DanmakuTreeTool
         path: ./DanmakuTreeTool
+    - run: ls
+    - run: ls ./DanmakuTreeBranches
     - run: cd ./DanmakuTreeBranches/DanmakuTreeTool & npm i
+
     - name: Get Repository
       uses: actions/checkout@v2
       with: 
