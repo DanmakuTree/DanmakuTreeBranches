@@ -36,3 +36,22 @@ jobs:
     - run: cd ./DanmakuTreeBranches && node ../DanmakuTreeTool/src/index.js build
     - run: ls ./DanmakuTreeBranches
     - run: ls ./DanmakuTreeBranches/dist
+    - name: Prepare Uploading Files to Backend
+      uses: actions/checkout@v2
+      with:
+        repository: shugen002/DanmakuTreeBackend
+        path: ./DanmakuTreeBackend
+        token: ${{ secrets.PA_TOKEN }}
+    - run: yes | cp -rf ./DanmakuTreeBranches/dist/* ./DanmakuTreeBackend/dist
+    - run: |
+        cd ./DanmakuTreeBackend
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add -A
+        git diff-index --quiet HEAD || git commit -m 'Auto Update with TSC'
+    - name: Push changes
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        directory: ./DanmakuTreeBackend
+        repository: shugen002/DanmakuTreeBackend
