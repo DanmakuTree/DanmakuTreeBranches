@@ -42,7 +42,7 @@ jobs:
         repository: shugen002/DanmakuTreeBackend
         ref: master
         path: ./DanmakuTreeBackend
-        token: ${{ secrets.PA_TOKEN }}
+        token: ${{ secrets.GH_TOKEN }}
     - run: yes | cp -rf ./DanmakuTreeBranches/dist/* ./DanmakuTreeBackend/dist
     - run: |
         cd ./DanmakuTreeBackend
@@ -53,6 +53,6 @@ jobs:
     - name: Push changes
       uses: ad-m/github-push-action@master
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+        github_token: ${{ secrets.GH_TOKEN }}
         directory: ./DanmakuTreeBackend
         repository: shugen002/DanmakuTreeBackend
