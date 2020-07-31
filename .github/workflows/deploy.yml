@@ -40,6 +40,7 @@ jobs:
       uses: actions/checkout@v2
       with:
         repository: shugen002/DanmakuTreeBackend
+        ref: master
         path: ./DanmakuTreeBackend
         token: ${{ secrets.PA_TOKEN }}
     - run: yes | cp -rf ./DanmakuTreeBranches/dist/* ./DanmakuTreeBackend/dist
