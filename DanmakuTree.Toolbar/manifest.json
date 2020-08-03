@@ -11,7 +11,7 @@
   "externalWindowOption": {
     "only": true,
     "transparent": true,
-    "backgroundColor": "#00FFFFFF",
+    "backgroundColor": "#000000FF",
     "hasShadow": false,
     "width": 320,
     "height": 80,
@@ -22,5 +22,10 @@
   },
   "permissions": [
     "Platform.BiliBili.API.sendRoomMessage"
-  ]
+  ],
+  "defaultConfig": {
+    "backgroundColor": "#000000AA",
+    "windowX": null,
+    "windowY": null
+  }
 }
