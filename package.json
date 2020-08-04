@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "danmakutreetool dev",
-    "build": "danmakutreetool build"
+    "build": "danmakutreetool build",
+    "update": "git fetch && git switch master && git pull"
   },
   "author": "",
   "license": "AGPL-3.0",
