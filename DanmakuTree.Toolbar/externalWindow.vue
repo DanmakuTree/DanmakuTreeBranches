@@ -8,6 +8,7 @@
       v-on:keyup='checkInput'
       v-on:keydown='handleEnter'></textarea>
     <div class="action">
+      <div class="close-button"><a-icon type="close" v-on:click="_close" /></div>
       <div class="other">
         {{ log }}
       </div>
@@ -123,6 +124,9 @@
         var newpos = this.$currentWindow.getBounds()
         this.dModuleConfig.windowX = newpos.x
         this.dModuleConfig.windowY = newpos.y
+      },
+      _close () {
+        this.$currentWindow.close()
       }
     }
   }
@@ -153,6 +157,11 @@ body{
   display: flex;
   height: 24px;
 }
+.action > .close-button{
+  width: 1.5rem;
+  height: 1.5rem;
+  text-align: center;
+}
 .action > .move-button{
   width: 1.5rem;
   height: 1.5rem;
@@ -162,5 +171,6 @@ body{
 .action > .other {
   text-align: center;
   flex-grow: 1;
+  -webkit-app-region: drag;
 }
 </style>

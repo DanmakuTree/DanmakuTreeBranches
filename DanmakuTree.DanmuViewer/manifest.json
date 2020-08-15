@@ -1,0 +1,31 @@
+{
+    "$schema": "https://raw.githubusercontent.com/DanmakuTree/DanmakuTreeTool/master/manifest.schema.json",
+    "id": "84f22a8f-61a2-4ee2-aba2-db964ed86a4f",
+    "name": "简单弹幕视图",
+    "description": "可以快速阅读纯文本弹幕的悬浮窗口",
+    "preview": [],
+    "version": "0.0.1",
+    "type": 0,
+    "externalWindow": "./externalWindow.vue",
+    "externalWindowOption": {
+      "only": true,
+      "transparent": true,
+      "backgroundColor": "#000000FF",
+      "hasShadow": false,
+      "width": 320,
+      "height": 24,
+      "useContentSize": false,
+      "frameless": true,
+      "skipTaskbar": true,
+      "alwaysOnTop": true,
+      "resizable": false
+    },
+    "permissions": [
+      "Platform.BiliBili.API.sendRoomMessage"
+    ],
+    "defaultConfig": {
+      "backgroundColor": "#000000AA",
+      "windowX": null,
+      "windowY": null
+    }
+  }
