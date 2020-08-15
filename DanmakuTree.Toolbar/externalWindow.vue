@@ -97,8 +97,11 @@
         switch (this.mainRoom.platform) {
         case 'BiliBili':
           this.$platform.BiliBili.API.sendRoomMessage(this.mainRoom.roomId, this.input).then((res) => {
-            if (res.code === 0) {
+            if (res.code === 0 && res.message === '') {
               this.displayLog('弹幕发送成功')
+              this.input = ''
+            } else if (res.code === 0) {
+              this.displayLog(`弹幕可能失败,Msg: ${res.message}`)
               this.input = ''
             } else {
               this.displayLog(`弹幕发送失败,Code:${res.code},Msg:${res.message}`)
