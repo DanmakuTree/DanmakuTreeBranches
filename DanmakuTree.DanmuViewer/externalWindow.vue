@@ -53,10 +53,10 @@
         // var node = document.createElement('li')
         // var list = document.querySelector('#content')
         var text = ''
+        var that = this
 
         var e = msg
         var d = msg.data
-        var giftMap = this.giftMap
         if (!d.data.isLotteryAutoMsg && d.type === 'message') {
           text = `${d.data.user.username} : ${d.data.comment}`
           var medal = `[${d.data.user.medal.label} ${d.data.user.medal.level}] `
@@ -80,13 +80,14 @@
           text = `${d.data.user.username} | 购买了舰长`
         }
         if (d.type === 'gift' && d.data.gift.coinType === 'gold') { // testing with 'silver' | todo: modify to 'gold'
-          text = `${d.data.user.username} 投喂了: ${d.data.gift.giftName}`
+          var vText = `${d.data.user.username} 投喂了: ${d.data.gift.giftName}`
 
-          if (!giftMap[text]) {
-            giftMap[text] = true
+          if (!that.giftMap[vText]) {
+            that.giftMap[vText] = true
+            text = vText
 
             setTimeout(function () {
-              delete giftMap[text]
+              delete that.giftMap[vText]
             }, 1000 * 10) // 10 seconds
           }
         }
@@ -96,11 +97,13 @@
 
         // node.innerText = text
         // list.appendChild(node)
-        var that = this
+        // var that = this
         // setTimeout(function () { node.outerHTML = ''; that._flex() }, 20000)
-        this.messages.push(text)
-        setTimeout(function () { that.messages.splice(0, 1); that.debounceFlex() }, 20000)
-        this.debounceFlex()
+        if (text.length > 0) {
+          this.messages.push(text)
+          setTimeout(function () { that.messages.splice(0, 1); that.debounceFlex() }, 20000)
+          this.debounceFlex()
+        }
       }
     },
     computed: {

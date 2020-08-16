@@ -4,7 +4,7 @@
     "name": "简单弹幕视图",
     "description": "可以快速阅读纯文本弹幕的悬浮窗口",
     "preview": [],
-    "version": "0.0.2",
+    "version": "0.0.3",
     "type": 0,
     "externalWindow": "./externalWindow.vue",
     "externalWindowOption": {
