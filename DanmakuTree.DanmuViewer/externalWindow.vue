@@ -1,10 +1,17 @@
 <template>
   <div class="container" :style="background">
-    <ul id='content'>
-      <li v-for="message in messages" :key="message">
+    <transition-group name="list" tag="ul">
+      <li
+        v-for="message in messages"
+        :key="message"
+        class=""
+        v-bind:css="false"
+        v-on:enter="enter"
+        v-on:leave="enter"
+      >
         {{message}}
       </li>
-    </ul>
+    </transition-group>
     <!-- <textarea
       class="input"
       ref="textarea"
@@ -39,7 +46,8 @@
         debounceMove: null,
         debounceFlex: null,
         giftMap: {},
-        messages: []
+        messages: [],
+        console_: null
       }
     },
     danmaku: {
@@ -100,9 +108,18 @@
         // var that = this
         // setTimeout(function () { node.outerHTML = ''; that._flex() }, 20000)
         if (text.length > 0) {
-          this.messages.push(text)
-          setTimeout(function () { that.messages.splice(0, 1); that.debounceFlex() }, 20000)
-          this.debounceFlex()
+          // text = text.replace(d.data.user.username, match => {
+          //   return '<span class="username">' + match + '</span>'
+          // })
+          var dText = text
+          this.messages.push(dText)
+          setTimeout(function () {
+            that.messages.splice(0, 1)
+            // setTimeout(that.debounceFlex(), 200)
+            this._flexDown()
+          }, 20000)
+          // this.debounceFlex()
+          this._flexUp()
         }
       }
     },
@@ -125,7 +142,8 @@
 
       this.debounceLog = debounce(this._displayLog.bind(this), 3000)
       this.debounceMove = debounce(this._move.bind(this), 500)
-      this.debounceFlex = debounce(this._flex.bind(this), 100)
+      this.debounceFlex = debounce(this._flex.bind(this), 200)
+      this.console_ = console.log
       this.getMainRoom()
     },
     methods: {
@@ -157,10 +175,28 @@
       },
       _flex () {
         var newpos = this.$currentWindow.getBounds()
-        this.$currentWindow.setBounds({ height: document.querySelector('.container').offsetHeight, y: newpos.y - document.querySelector('.container').offsetHeight + newpos.height })
+        var calc = newpos.height - document.querySelector('.container').offsetHeight
+        var delta = (calc > 0) ? 24 : -24
+        if (calc === 0) { delta = 0 }
+        this.$currentWindow.setBounds({ height: document.querySelector('.container').offsetHeight, y: newpos.y + delta })
+        console.log(delta)
+        console.log(`Y at ${newpos.y + delta}`)
       },
       _close () {
         this.$currentWindow.close()
+      },
+      enter (el, done) {
+        this.console_(el)
+      },
+      _flexUp () {
+        var newpos = this.$currentWindow.getBounds()
+        var delta = -24
+        this.$currentWindow.setBounds({ height: document.querySelector('.container').offsetHeight, y: newpos.y + delta })
+      },
+      _flexDown () {
+        var newpos = this.$currentWindow.getBounds()
+        var delta = 24
+        this.$currentWindow.setBounds({ height: document.querySelector('.container').offsetHeight, y: newpos.y + delta })
       }
     }
   }
@@ -176,6 +212,9 @@ html{
 body{
   background-color: transparent;
   height: fit-content;
+}
+.username li span{
+  color:#4FC1E9;
 }
 .container{
   font-size: 18px;
@@ -208,5 +247,22 @@ body{
   text-align: center;
   flex-grow: 1;
   -webkit-app-region: drag;
+}
+.list-item {
+  display: inline-block;
+}
+.list-enter-active /*, .list-leave-active */ {
+  transition: all 0.8s;
+}
+.list-enter /*, .list-leave-to /* .list-leave-active below version 2.1.8 */ {
+  opacity: 0;
+  transform: translateY(26px);
+}
+.list-leave-active {
+  transition: all 0.1s;
+}
+.list-leave-to {
+  opacity: 0;
+  transform: translateY(26px);
 }
 </style>
