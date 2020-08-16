@@ -58,29 +58,29 @@
         var d = msg.data
         var giftMap = this.giftMap
         if (!d.data.isLotteryAutoMsg && d.type === 'message') {
-          text = `${d.data.user.username} (uid: ${d.data.user.uid})说: ${d.data.comment}`
+          text = `${d.data.user.username} : ${d.data.comment}`
           var medal = `[${d.data.user.medal.label} ${d.data.user.medal.level}] `
           if (medal !== '[ 0] ') { text = medal + text }
         }
         if (d.type === 'block') {
-          text = `在房间 ${e.roomId} 内, 用户 ${d.data.user.username} (uid: ${d.data.user.uid}) 已被管理员禁言`
+          text = `在房间 ${e.roomId} 内, 用户 ${d.data.user.username} 已被管理员禁言`
         }
         if (d.type === 'welcomeRoomVIP') {
-          text = `前方舰长 ${d.data.user.name} (uid: ${d.data.user.uid}) 鲨过来了！`
+          text = `前方舰长 ${d.data.user.name} 鲨过来了！`
         }
         if (d.type === 'superchat') {
           if (d.data.user.medal) {
             medal = `[${d.data.user.medal.label} ${d.data.user.medal.level}] `
           }
-          text = `${d.data.user.username} (uid: ${d.data.user.uid})说: ${d.data.comment}`
+          text = `${d.data.user.username} : ${d.data.comment}`
           if (medal !== '[ 0] ') { text = medal + text }
           text = '收到了一条SC，' + text
         }
         if (d.type === 'guardbuy') {
-          text = `${d.data.user.username} (uid: ${d.data.user.uid}) | 购买了舰长`
+          text = `${d.data.user.username} | 购买了舰长`
         }
         if (d.type === 'gift' && d.data.gift.coinType === 'gold') { // testing with 'silver' | todo: modify to 'gold'
-          text = `${d.data.user.username} (uid: ${d.data.user.uid})投喂了: ${d.data.gift.giftName}`
+          text = `${d.data.user.username} 投喂了: ${d.data.gift.giftName}`
 
           if (!giftMap[text]) {
             giftMap[text] = true
@@ -106,7 +106,7 @@
     computed: {
       background () {
         return {
-          'background-color': this.dModuleConfig.backgroundColor || 'rgba(0,0,0,0.7)'
+          'background-color': this.dModuleConfig.backgroundColor || 'rgba(0,0,0,0.42)'
         }
       }
     },
@@ -175,7 +175,7 @@ body{
   height: fit-content;
 }
 .container{
-  font-size: 13px;
+  font-size: 18px;
   width: 100%;
   height: fit-content;
   color: white;
