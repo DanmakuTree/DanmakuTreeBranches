@@ -1,10 +1,10 @@
 <template>
   <div class="container" :style="background">
-    <ul id='content'>
+    <transition-group name="list" tag="ul">
       <li v-for="message in messages" :key="message">
         {{message}}
       </li>
-    </ul>
+    </transition-group>
     <!-- <textarea
       class="input"
       ref="textarea"
@@ -38,8 +38,10 @@
         debounceLog: null,
         debounceMove: null,
         debounceFlex: null,
+        followerLog: null,
         giftMap: {},
-        messages: []
+        messages: [],
+        online: 0
       }
     },
     danmaku: {
@@ -94,6 +96,9 @@
         if (d.type === 'live') {
           text = '所在房间开播啦！'
         }
+        if (d.type === 'online') {
+          that.online = d.data.online
+        }
 
         // node.innerText = text
         // list.appendChild(node)
@@ -101,8 +106,10 @@
         // setTimeout(function () { node.outerHTML = ''; that._flex() }, 20000)
         if (text.length > 0) {
           this.messages.push(text)
-          setTimeout(function () { that.messages.splice(0, 1); that.debounceFlex() }, 20000)
-          this.debounceFlex()
+          setTimeout(function () {
+            that.messages.splice(0, 1)
+          }, 15000)
+          // this.debounceFlex()
         }
       }
     },
@@ -124,9 +131,11 @@
       }
 
       this.debounceLog = debounce(this._displayLog.bind(this), 3000)
+      this.followerLog = debounce(this._displayLog.bind(this), 10000)
       this.debounceMove = debounce(this._move.bind(this), 500)
-      this.debounceFlex = debounce(this._flex.bind(this), 100)
+      this.debounceFlex = debounce(this._flex.bind(this), 300)
       this.getMainRoom()
+      this.getFollower()
     },
     methods: {
       getMainRoom () {
@@ -143,9 +152,25 @@
           }
         })
       },
+      getFollower () {
+        var that = this
+        setInterval(function () {
+          that.$platform.BiliBili.API.getRoomInfo(that.mainRoom.roomId).then((e) => {
+            that.displayFollower(`关注人数: ${e.data.attention}`)
+            setTimeout(() => { that.displayFollower(`房间人气: ${that.online}`) }, 10000)
+          }).catch(() => {})
+        }, 30000)
+        setInterval(function () {
+          that.debounceFlex()
+        }, 800)
+      },
       displayLog (text) {
         this.log = text
         this.debounceLog()
+      },
+      displayFollower (text) {
+        this.log = text
+        this.followerLog()
       },
       _displayLog () {
         this.log = this.normal
@@ -208,5 +233,26 @@ body{
   text-align: center;
   flex-grow: 1;
   -webkit-app-region: drag;
+  color: rgb(234,114,147)
+}
+.username {
+  color: #4FC1E9
+}
+.list-item {
+  display: inline-block;
+}
+.list-enter-active /*, .list-leave-active */ {
+  transition: all 1.2s;
+}
+.list-enter /*, .list-leave-to /* .list-leave-active below version 2.1.8 */ {
+  opacity: 0;
+  transform: translateY(28px);
+}
+.list-leave-active {
+  transition: all 0.8s;
+}
+.list-leave-to {
+  opacity: 0;
+  transform: translateY(28px);
 }
 </style>
