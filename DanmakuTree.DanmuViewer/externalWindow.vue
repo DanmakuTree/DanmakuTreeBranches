@@ -1,9 +1,9 @@
 <template>
   <div class="container" :style="background">
     <transition-group name="list" tag="ul">
-      <li v-for="message in messages" :key="message">
+      <dmkli v-for="message in messages" :key="message">
         {{message}}
-      </li>
+      </dmkli>
     </transition-group>
     <!-- <textarea
       class="input"
@@ -23,9 +23,13 @@
 </template>
 
 <script>
+  import dmkli from './dmkli.vue'
   import { debounce } from 'lodash'
   const supportPlatform = ['BiliBili']
   export default {
+    components: {
+      dmkli
+    },
     data: function () {
       return {
         log: '未设置房间',
@@ -61,29 +65,29 @@
         var e = msg
         var d = msg.data
         if (!d.data.isLotteryAutoMsg && d.type === 'message') {
-          text = `${d.data.user.username} : ${d.data.comment}`
+          text = `%username=${d.data.user.username}% : ${d.data.comment}`
           var medal = `[${d.data.user.medal.label} ${d.data.user.medal.level}] `
           if (medal !== '[ 0] ') { text = medal + text }
         }
         if (d.type === 'block') {
-          text = `在房间 ${e.roomId} 内, 用户 ${d.data.user.username} 已被管理员禁言`
+          text = `在房间 ${e.roomId} 内, 用户 %username=${d.data.user.username}% 已被管理员禁言`
         }
         if (d.type === 'welcomeRoomVIP') {
-          text = `前方舰长 ${d.data.user.name} 鲨过来了！`
+          text = `前方舰长 %username=${d.data.user.name}% 鲨过来了！`
         }
         if (d.type === 'superchat') {
           if (d.data.user.medal) {
             medal = `[${d.data.user.medal.label} ${d.data.user.medal.level}] `
           }
-          text = `${d.data.user.username} : ${d.data.comment}`
+          text = `%username=${d.data.user.username}% : ${d.data.comment}`
           if (medal !== '[ 0] ') { text = medal + text }
           text = '收到了一条SC，' + text
         }
         if (d.type === 'guardbuy') {
-          text = `${d.data.user.username} | 购买了舰长`
+          text = `%username=${d.data.user.username}% | 购买了舰长`
         }
         if (d.type === 'gift' && d.data.gift.coinType === 'gold') { // testing with 'silver' | todo: modify to 'gold'
-          var vText = `${d.data.user.username} 投喂了: ${d.data.gift.giftName}`
+          var vText = `%username=${d.data.user.username}% 投喂了: ${d.data.gift.giftName}`
 
           if (!that.giftMap[vText]) {
             that.giftMap[vText] = true
