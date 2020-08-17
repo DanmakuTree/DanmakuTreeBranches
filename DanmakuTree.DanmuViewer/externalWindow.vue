@@ -41,7 +41,8 @@
         followerLog: null,
         giftMap: {},
         messages: [],
-        online: 0
+        online: 0,
+        fans: null
       }
     },
     danmaku: {
@@ -156,9 +157,12 @@
         var that = this
         setInterval(function () {
           that.$platform.BiliBili.API.getRoomInfo(that.mainRoom.roomId).then((e) => {
-            that.displayFollower(`关注人数: ${e.data.attention}`)
-            setTimeout(() => { that.displayFollower(`房间人气: ${that.online}`) }, 10000)
+            that.fans = e.data.attention
           }).catch(() => {})
+        }, 15 * 60000)
+        setInterval(function () {
+          if (that.fans) { that.displayFollower(`关注人数: ${that.fans}`) }
+          setTimeout(() => { that.displayFollower(`房间人气: ${that.online}`) }, 10000)
         }, 30000)
         setInterval(function () {
           that.debounceFlex()
