@@ -46,7 +46,12 @@
         giftMap: {},
         messages: [],
         online: 0,
-        fans: null
+        fans: null,
+        window: {
+          width: 320,
+          height: 24,
+          lowY: null
+        }
       }
     },
     danmaku: {
@@ -130,7 +135,7 @@
         this.dConfigDataLoad.then(() => {
           console.log(this.dModuleConfig)
           if (typeof this.dModuleConfig.windowX === 'number' && typeof this.dModuleConfig.windowY === 'number') {
-            this.$currentWindow.setBounds({ x: this.dModuleConfig.windowX, y: this.dModuleConfig.windowY })
+            this.$currentWindow.setBounds({ x: this.dModuleConfig.windowX, y: this.dModuleConfig.windowY, width: this.window.width, height: this.window.height })
           }
         })
       }
@@ -138,7 +143,7 @@
       this.debounceLog = debounce(this._displayLog.bind(this), 3000)
       this.followerLog = debounce(this._displayLog.bind(this), 10000)
       this.debounceMove = debounce(this._move.bind(this), 500)
-      this.debounceFlex = debounce(this._flex.bind(this), 300)
+      this.debounceFlex = debounce(this._flex.bind(this), 50)
       this.getMainRoom()
       this.getFollower()
     },
@@ -187,10 +192,12 @@
         var newpos = this.$currentWindow.getBounds()
         this.dModuleConfig.windowX = newpos.x
         this.dModuleConfig.windowY = newpos.y
+        this.window.lowY = newpos.y + this.window.height
       },
       _flex () {
         var newpos = this.$currentWindow.getBounds()
-        this.$currentWindow.setBounds({ height: document.querySelector('.container').offsetHeight, y: newpos.y - document.querySelector('.container').offsetHeight + newpos.height })
+        var contentHeight = document.querySelector('.container').offsetHeight
+        this.$currentWindow.setBounds({ height: contentHeight, y: newpos.y - contentHeight + newpos.height, width: this.window.width })
       },
       _close () {
         this.$currentWindow.close()
