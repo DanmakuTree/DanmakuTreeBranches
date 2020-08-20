@@ -42,6 +42,7 @@
         debounceLog: null,
         debounceMove: null,
         debounceFlex: null,
+        debounceSetHeight: null,
         followerLog: null,
         giftMap: {},
         messages: [],
@@ -50,6 +51,7 @@
         window: {
           width: 320,
           height: 24,
+          vHeight: 24,
           lowY: null
         }
       }
@@ -118,8 +120,11 @@
           this.messages.push(text)
           setTimeout(function () {
             that.messages.splice(0, 1)
+            that.window.vHeight -= 28
+            setTimeout(() => { that._SetHeight() }, 700)
           }, 15000)
-          // this.debounceFlex()
+          this.window.vHeight += 28
+          this._SetHeight()
         }
       }
     },
@@ -144,8 +149,10 @@
       this.followerLog = debounce(this._displayLog.bind(this), 10000)
       this.debounceMove = debounce(this._move.bind(this), 500)
       this.debounceFlex = debounce(this._flex.bind(this), 50)
+      this.debounceSetHeight = debounce(this._SetHeight.bind(this), 50)
       this.getMainRoom()
       this.getFollower()
+      this.window.lowY = this.dModuleConfig.windowY - this.window.height
     },
     methods: {
       getMainRoom () {
@@ -192,12 +199,20 @@
         var newpos = this.$currentWindow.getBounds()
         this.dModuleConfig.windowX = newpos.x
         this.dModuleConfig.windowY = newpos.y
-        this.window.lowY = newpos.y + this.window.height
+        this.window.lowY = newpos.y + this.window.vHeight
       },
       _flex () {
-        var newpos = this.$currentWindow.getBounds()
+        // var newpos = this.$currentWindow.getBounds()
         var contentHeight = document.querySelector('.container').offsetHeight
-        this.$currentWindow.setBounds({ height: contentHeight, y: newpos.y - contentHeight + newpos.height, width: this.window.width })
+        this.window.vHeight = contentHeight
+        // this.$currentWindow.setBounds({ height: this.window.vHeight, y: this.dModuleConfig.windowY - this.window.vHeight + this.window.height, width: this.window.width })
+        this._SetHeight()
+      },
+      _SetHeight (delta) {
+        this.$currentWindow.setBounds({ height: this.window.vHeight, y: this.window.lowY - this.window.vHeight, width: this.window.width })
+        // console.log(this.$currentWindow.getBounds().y)
+        console.log('lowY', this.window.lowY)
+        console.log('windowY', this.dModuleConfig.windowY)
       },
       _close () {
         this.$currentWindow.close()
@@ -255,6 +270,7 @@ body{
 }
 .list-item {
   display: inline-block;
+  line-height: 28px;
 }
 .list-enter-active /*, .list-leave-active */ {
   transition: all 1.2s;
