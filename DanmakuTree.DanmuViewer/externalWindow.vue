@@ -1,10 +1,5 @@
 <template>
   <div class="container" :style="background">
-    <transition-group name="list" tag="ul">
-      <dmkli v-for="message in messages" :key="message">
-        {{message}}
-      </dmkli>
-    </transition-group>
     <!-- <textarea
       class="input"
       ref="textarea"
@@ -19,6 +14,11 @@
       </div>
       <div class="move-button"><i class="fas fa-arrows-alt"></i></div>
     </div>
+    <transition-group name="list" tag="ul">
+      <dmkli v-for="message in messages" :key="message">
+        {{message}}
+      </dmkli>
+    </transition-group>
   </div>
 </template>
 
@@ -48,16 +48,19 @@
         messages: [],
         online: 0,
         fans: null,
-        window: {
+        vWindow: {
           width: 320,
           height: 24,
           vHeight: 24,
-          lowY: null
+          lowY: null,
+          x: null
         }
       }
     },
     danmaku: {
       'CurrentWindow.move' () {
+        console.log('window moved!')
+
         if (this.debounceMove) {
           this.debounceMove()
         }
@@ -118,13 +121,17 @@
         // setTimeout(function () { node.outerHTML = ''; that._flex() }, 20000)
         if (text.length > 0) {
           this.messages.push(text)
+          // this.messages.unshift(text)
           setTimeout(function () {
-            that.messages.splice(0, 1)
-            that.window.vHeight -= 28
+            that.messages.shift()
+            // that.messages.pop()
+            // that.window.vHeight -= 28
             setTimeout(() => { that._SetHeight() }, 700)
           }, 15000)
-          this.window.vHeight += 28
+          // this.vWindow.vHeight += 28
           this._SetHeight()
+          setTimeout(() => { that._SetHeight() }, 900)
+          setTimeout(() => { that._SetHeight() }, 1200)
         }
       }
     },
@@ -140,7 +147,7 @@
         this.dConfigDataLoad.then(() => {
           console.log(this.dModuleConfig)
           if (typeof this.dModuleConfig.windowX === 'number' && typeof this.dModuleConfig.windowY === 'number') {
-            this.$currentWindow.setBounds({ x: this.dModuleConfig.windowX, y: this.dModuleConfig.windowY, width: this.window.width, height: this.window.height })
+            this.$currentWindow.setBounds({ x: this.dModuleConfig.windowX, y: this.dModuleConfig.windowY, width: this.vWindow.width, height: this.vWindow.height })
           }
         })
       }
@@ -152,7 +159,7 @@
       this.debounceSetHeight = debounce(this._SetHeight.bind(this), 50)
       this.getMainRoom()
       this.getFollower()
-      this.window.lowY = this.dModuleConfig.windowY - this.window.height
+      this.vWindow.lowY = this.dModuleConfig.windowY - this.vWindow.height
     },
     methods: {
       getMainRoom () {
@@ -199,29 +206,36 @@
         var newpos = this.$currentWindow.getBounds()
         this.dModuleConfig.windowX = newpos.x
         this.dModuleConfig.windowY = newpos.y
-        this.window.lowY = newpos.y + this.window.vHeight
+        this.vWindow.lowY = this.dModuleConfig.windowY + this.vWindow.vHeight
+        this.vWindow.x = this.dModuleConfig.windowX
       },
       _flex () {
         // var newpos = this.$currentWindow.getBounds()
         var contentHeight = document.querySelector('.container').offsetHeight
-        this.window.vHeight = contentHeight
-        // this.$currentWindow.setBounds({ height: this.window.vHeight, y: this.dModuleConfig.windowY - this.window.vHeight + this.window.height, width: this.window.width })
+        var positive = contentHeight - this.vWindow.vHeight
+        // var diff = (positive > 0) ? Math.floor((positive) / 28) : Math.ceil((positive) / 28)
+        var diff = Math.round((positive) / 28)
+        this.vWindow.vHeight += diff * 28
+        // NOTE: this line makes window not moved
+        this.vWindow.lowY = this.dModuleConfig.windowY + 24 + Math.round((contentHeight - 24) / 28) * 28
         this._SetHeight()
       },
       _SetHeight (delta) {
-        this.$currentWindow.setBounds({ height: this.window.vHeight, y: this.window.lowY - this.window.vHeight, width: this.window.width })
+        window.API.CurrentWindow.setBounds({ height: this.vWindow.vHeight, y: this.vWindow.lowY - this.vWindow.vHeight, width: this.vWindow.width, x: this.vWindow.x })
         // console.log(this.$currentWindow.getBounds().y)
-        console.log('lowY', this.window.lowY)
+        console.log('lowY', this.vWindow.lowY)
         console.log('windowY', this.dModuleConfig.windowY)
+        // console.log('this.vWindow', this.vWindow)
       },
       _close () {
         this.$currentWindow.close()
       }
     }
   }
-  document.body.onclick = function () {
-    this._flex()
-  }
+  // document.body.onclick = function () {
+  //   this._flex()
+  // }
+  // console.log(window.API.CurrentWindow)
 </script>
 
 <style>
@@ -231,6 +245,7 @@ html{
 body{
   background-color: transparent;
   height: fit-content;
+  overflow-x: hidden;
 }
 .container{
   font-size: 18px;
@@ -271,6 +286,7 @@ body{
 .list-item {
   display: inline-block;
   line-height: 28px;
+  width: 320px;
 }
 .list-enter-active /*, .list-leave-active */ {
   transition: all 1.2s;
@@ -284,6 +300,7 @@ body{
 }
 .list-leave-to {
   opacity: 0;
-  transform: translateY(28px);
+  transform: translateY(-28px);
 }
+::-webkit-scrollbar {         display: none;       }
 </style>
