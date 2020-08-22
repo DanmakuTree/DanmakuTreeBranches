@@ -41,8 +41,16 @@
     // },
     methods: {
       str2dom (str, h) {
-        var re = /(%username=.+%)/g
+        var re = /(%(username|warning)=.+%)/g
         return str.split(re).map((el) => {
+          switch (el) {
+          case 'username':
+            return ''
+          case 'warning':
+            return ''
+          default:
+            break
+          }
           var m = el.match(/%(.+)=(.+)%/)
           if (m) {
             return h('span', {

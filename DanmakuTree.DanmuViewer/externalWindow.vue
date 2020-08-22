@@ -43,6 +43,8 @@
         debounceMove: null,
         debounceFlex: null,
         debounceSetHeight: null,
+        debounceWarnInDanmu: null,
+        moving: false,
         followerLog: null,
         giftMap: {},
         messages: [],
@@ -60,6 +62,10 @@
     danmaku: {
       'CurrentWindow.move' () {
         console.log('window moved!')
+        this.moving = true
+        if (this.debounceWarnInDanmu) {
+          this.debounceWarnInDanmu('窗口发生了移动')
+        }
 
         if (this.debounceMove) {
           this.debounceMove()
@@ -109,7 +115,7 @@
           }
         }
         if (d.type === 'live') {
-          text = '所在房间开播啦！'
+          text = `%warning=所在房间 ${e.roomId} 开播啦！%`
         }
         if (d.type === 'online') {
           that.online = d.data.online
@@ -157,6 +163,7 @@
       this.debounceMove = debounce(this._move.bind(this), 500)
       this.debounceFlex = debounce(this._flex.bind(this), 50)
       this.debounceSetHeight = debounce(this._SetHeight.bind(this), 50)
+      this.debounceWarnInDanmu = debounce(this._warnInDanmu.bind(this), 300)
       this.getMainRoom()
       this.getFollower()
       this.vWindow.lowY = this.dModuleConfig.windowY - this.vWindow.height
@@ -188,7 +195,7 @@
           setTimeout(() => { that.displayFollower(`房间人气: ${that.online}`) }, 10000)
         }, 30000)
         setInterval(function () {
-          that.debounceFlex()
+          if (!that.moving) { that.debounceFlex() }
         }, 800)
       },
       displayLog (text) {
@@ -229,6 +236,18 @@
       },
       _close () {
         this.$currentWindow.close()
+      },
+      _warnInDanmu (str) {
+        // this.messages.push(`%warning=${str}% `)
+        var that = this
+        if (this.debounceLog) {
+          this.log = str
+          this.debounceLog()
+          console.log('window moved warning set')
+        }
+        setTimeout(function () {
+          that.moving = false
+        }, 5000)
       }
     }
   }
@@ -282,6 +301,9 @@ body{
 }
 .username {
   color: #4FC1E9
+}
+.warning {
+  color: #FFC107
 }
 .list-item {
   display: inline-block;
