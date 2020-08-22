@@ -142,7 +142,7 @@ body{
 .container{
   font-size: 13px;
   width: 100%;
-  height: 100%;
+  height: 80px;
   color: white;
   overflow: hidden;
 }
