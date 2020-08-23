@@ -5,13 +5,13 @@
       ref="textarea"
       placeholder="弹幕内容"
       v-model="input"
+      v-cloak
+      onmouseup="fx(this)"
       v-on:keyup='checkInput'
       v-on:keydown='handleEnter'></textarea>
     <div class="action">
       <div class="close-button"><a-icon type="close" v-on:click="_close" /></div>
-      <div class="other">
-        {{ log }}
-      </div>
+      <div class="other" v-cloak>{{ log }}</div>
       <div class="move-button"><i class="fas fa-arrows-alt"></i></div>
     </div>
   </div>
@@ -29,7 +29,7 @@
           platform: '',
           roomId: ''
         },
-        input: '',
+        input: ' ',
         debounceLog: null,
         debounceMove: null
       }
@@ -83,7 +83,7 @@
       checkInput (event) {
         if (this.$refs.textarea.value.length <= 0) { return }
         if (event.key !== 'Enter') {
-          this.displayLog(`长度: ${this.$refs.textarea.value.length}`)
+          this.displayLog(`长度: ${this.$refs.textarea.value.trim().length}`)
         }
       },
       handleEnter (event) {
@@ -91,18 +91,21 @@
         } else {
           event.returnValue = false
           this.sendDanmaku()
+          setTimeout(() => {
+            window.fx(document.querySelector('.input'))
+          }, 200)
         }
       },
       sendDanmaku () {
         switch (this.mainRoom.platform) {
         case 'BiliBili':
-          this.$platform.BiliBili.API.sendRoomMessage(this.mainRoom.roomId, this.input).then((res) => {
+          this.$platform.BiliBili.API.sendRoomMessage(this.mainRoom.roomId, this.input.trim()).then((res) => {
             if (res.code === 0 && res.message === '') {
               this.displayLog('弹幕发送成功')
-              this.input = ''
+              this.input = ' '
             } else if (res.code === 0) {
               this.displayLog(`弹幕可能失败,Msg: ${res.message}`)
-              this.input = ''
+              this.input = ' '
             } else {
               this.displayLog(`弹幕发送失败,Code:${res.code},Msg:${res.message}`)
             }
@@ -132,6 +135,10 @@
         this.$currentWindow.close()
       }
     }
+  }
+  window.fx = function (element) {
+    element.focus()
+    element.setSelectionRange(element.value.length - 1, element.value.length - 1)
   }
 </script>
 
@@ -175,5 +182,8 @@ body{
   text-align: center;
   flex-grow: 1;
   -webkit-app-region: drag;
+}
+[v-cloak] {
+  display: block;
 }
 </style>
