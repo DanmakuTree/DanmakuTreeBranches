@@ -41,7 +41,7 @@
     // },
     methods: {
       str2dom (str, h) {
-        var re = /(%(username|warning)=.+%)/g
+        var re = /(%(username|warning)=.+?%)/g
         return str.split(re).map((el) => {
           switch (el) {
           case 'username':
