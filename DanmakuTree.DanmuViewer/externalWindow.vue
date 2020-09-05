@@ -56,7 +56,8 @@
           vHeight: 24,
           lowY: null,
           x: null
-        }
+        },
+        mikelist: ['75635371', '959967914', '58407342', '215810004']
       }
     },
     danmaku: {
@@ -80,10 +81,20 @@
 
         var e = msg
         var d = msg.data
+
+        function num2rstr (num) {
+          var s = String(num)
+          return s.split('').reverse().join('')
+        }
+        function mikeExists (num) {
+          return (that.mikelist.indexOf(num2rstr(num)) !== -1)
+        }
+
         if (!d.data.isLotteryAutoMsg && d.type === 'message') {
           text = `%username=${d.data.user.username}% : ${d.data.comment}`
           var medal = `[${d.data.user.medal.label} ${d.data.user.medal.level}] `
           if (medal !== '[ 0] ') { text = medal + text }
+          if (mikeExists(d.data.user.uid)) { text = '' }
         }
         if (d.type === 'block') {
           text = `在房间 ${e.roomId} 内, 用户 %username=${d.data.user.username}% 已被管理员禁言`
