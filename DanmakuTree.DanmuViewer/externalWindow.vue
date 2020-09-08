@@ -241,8 +241,8 @@
       _SetHeight (delta) {
         window.API.CurrentWindow.setBounds({ height: this.vWindow.vHeight, y: this.vWindow.lowY - this.vWindow.vHeight, width: this.vWindow.width, x: this.vWindow.x })
         // console.log(this.$currentWindow.getBounds().y)
-        console.log('lowY', this.vWindow.lowY)
-        console.log('windowY', this.dModuleConfig.windowY)
+        // console.log('lowY', this.vWindow.lowY)
+        // console.log('windowY', this.dModuleConfig.windowY)
         // console.log('this.vWindow', this.vWindow)
       },
       _close () {
