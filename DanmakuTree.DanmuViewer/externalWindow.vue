@@ -25,6 +25,7 @@
 <script>
   import dmkli from './dmkli.vue'
   import { debounce } from 'lodash'
+  import mikejson from './mike.json'
   const supportPlatform = ['BiliBili']
   export default {
     components: {
@@ -57,7 +58,8 @@
           lowY: null,
           x: null
         },
-        mikelist: ['75635371', '959967914', '58407342', '215810004', '83772912', '450243801', '1299368', '357219874', '606426073', '31348909']
+        mikelist: mikejson.mikelist,
+        mikeword: mikejson.mikeword
       }
     },
     danmaku: {
@@ -89,12 +91,16 @@
         function mikeExists (num) {
           return (that.mikelist.indexOf(num2rstr(num)) !== -1)
         }
+        function mikewordExists (comment) {
+          return (that.mikeword.indexOf(comment) !== -1)
+        }
 
         if (!d.data.isLotteryAutoMsg && d.type === 'message') {
           text = `%username=${d.data.user.username}% : ${d.data.comment}`
           var medal = `[${d.data.user.medal.label} ${d.data.user.medal.level}] `
           if (medal !== '[ 0] ') { text = medal + text }
           if (mikeExists(d.data.user.uid)) { text = '' }
+          if (mikewordExists(d.data.comment)) { text = '' }
         }
         if (d.type === 'block') {
           text = `在房间 ${e.roomId} 内, 用户 %username=${d.data.user.username}% 已被管理员禁言`
