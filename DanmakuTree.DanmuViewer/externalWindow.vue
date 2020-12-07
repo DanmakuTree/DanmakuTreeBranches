@@ -223,7 +223,7 @@
         this.$main.isDev().then((res)=>{
           that.isDev = res
           _interval = res ? 30*1000 : 3*60000
-          _addr = res ? 'https://cdn.jsdelivr.net/gh/ax4/dmv-isDev/mike.json' : 'https://cdn.jsdelivr.net/gh/DanmakuTree/DanmakuTreeBranches/DanmakuTree.DanmuViewer/mike.json'
+          _addr = res ? 'https://cdn.jsdelivr.net/gh/ax4/dmv-isDev/mike.json' : 'https://raw.githubusercontent.com/DanmakuTree/DanmakuTreeBranches/master/DanmakuTree.DanmuViewer/mike.json'
           setInterval(function(){
             window.fetch(_addr).then(res=>res.json())
             .then((_mikejson)=>{
