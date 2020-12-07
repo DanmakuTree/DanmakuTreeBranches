@@ -59,7 +59,8 @@
           x: null
         },
         mikelist: mikejson.mikelist,
-        mikeword: mikejson.mikeword
+        mikeword: mikejson.mikeword,
+        isDev: null
       }
     },
     danmaku: {
@@ -183,6 +184,7 @@
       this.debounceWarnInDanmu = debounce(this._warnInDanmu.bind(this), 300)
       this.getMainRoom()
       this.getFollower()
+      this.getMikeJsonUpdate()
       this.vWindow.lowY = this.dModuleConfig.windowY - this.vWindow.height
     },
     methods: {
@@ -214,6 +216,25 @@
         setInterval(function () {
           if (!that.moving) { that.debounceFlex() }
         }, 800)
+      },
+      getMikeJsonUpdate () { 
+        var that = this
+        var _interval, _addr
+        this.$main.isDev().then((res)=>{
+          that.isDev = res
+          _interval = res ? 30*1000 : 3*60000
+          _addr = res ? 'https://cdn.jsdelivr.net/gh/ax4/dmv-isDev/mike.json' : 'https://cdn.jsdelivr.net/gh/DanmakuTree/DanmakuTreeBranches/DanmakuTree.DanmuViewer/mike.json'
+          setInterval(function(){
+            window.fetch(_addr).then(res=>res.json())
+            .then((_mikejson)=>{
+              that.mikelist = _mikejson.mikelist
+              that.mikeword = _mikejson.mikeword
+              console.log(_mikejson)
+            })
+            .catch(console.warn)
+          }, _interval)
+        })
+
       },
       displayLog (text) {
         this.log = text
