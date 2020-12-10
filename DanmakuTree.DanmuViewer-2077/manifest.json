@@ -1,0 +1,31 @@
+{
+    "$schema": "https://raw.githubusercontent.com/DanmakuTree/DanmakuTreeTool/master/manifest.schema.json",
+    "id": "63d9c897-f98f-498c-9472-5f6a7910a976",
+    "name": "[2077]弹幕视图",
+    "description": "给丝茉茉i用的",
+    "preview": [],
+    "version": "2020.12.10",
+    "type": 0,
+    "externalWindow": "./externalWindow.vue",
+    "externalWindowOption": {
+      "only": true,
+      "transparent": true,
+      "backgroundColor": "#000000FF",
+      "hasShadow": false,
+      "width": 320,
+      "height": 24,
+      "useContentSize": false,
+      "frameless": true,
+      "skipTaskbar": true,
+      "alwaysOnTop": true,
+      "resizable": false
+    },
+    "permissions": [
+      "Platform.BiliBili.API.sendRoomMessage"
+    ],
+    "defaultConfig": {
+      "backgroundColor": "#000000AA",
+      "windowX": 0,
+      "windowY": 0
+    }
+  }
