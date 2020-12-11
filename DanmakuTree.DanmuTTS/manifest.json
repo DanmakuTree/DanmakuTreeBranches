@@ -4,7 +4,7 @@
     "name": "弹幕语音姬",
     "description": "朗读语音",
     "preview": [],
-    "version": "0.0.1",
+    "version": "0.0.2",
     "type": 0,
     "externalWindow": "./externalWindow.vue",
     "externalWindowOption": {

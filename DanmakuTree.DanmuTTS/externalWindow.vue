@@ -87,6 +87,8 @@ export default {
             let u = new SpeechSynthesisUtterance();
             u.lang = lang;
             u.text = msg;
+            u.pitch = 2;
+            u.rate = 2;
             if (voice) {u.voice = voice}
             synth.speak(u);
         },
@@ -117,13 +119,13 @@ gift: ${this.giftCheck}
             this.speak('粤语','zh-HK')
             this.speak('日本語', 'ja-JP')
             this.speak('한국의', 'ko-KR')
-            this.speak(`我不会唱歌，但我会念
-            收到username的sc：text
-            感谢username投喂的gifts，啾咪
-            前方舰长username鲨过来了！
-            `)
-            this.speak('目前我的语言模板技能是恶魔Ki丽叩撒嘛教会我的，很感谢她！')
-            this.speak('Ki丽叩!Ki丽叩!发出了单推的叫声')
+            // this.speak(`我不会唱歌，但我会念
+            // 收到username的sc：text
+            // 感谢username投喂的gifts，啾咪
+            // 前方舰长username鲨过来了！
+            // `)
+            // this.speak('目前我的语言模板技能是恶魔Ki丽叩撒嘛教会我的，很感谢她！')
+            // this.speak('Ki丽叩!Ki丽叩!发出了单推的叫声')
             this.speak('我正在学习其他的技能和多语言切换，希望我早点升级我自己')
         }
     }
