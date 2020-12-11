@@ -114,7 +114,7 @@
             medal = `[${d.data.user.medal.label} ${d.data.user.medal.level}] `
           }
           text = `%username=${d.data.user.username}% : ${d.data.comment}`
-          if (medal !== '[ 0] ') { text = medal + text }
+          if ( medal && (medal !== '[ 0] ')) { text = medal + text }
           text = '收到了一条SC，' + text
         }
         if (d.type === 'guardbuy') {
