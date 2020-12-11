@@ -1,0 +1,21 @@
+{
+    "$schema": "https://raw.githubusercontent.com/DanmakuTree/DanmakuTreeTool/master/manifest.schema.json",
+    "id": "352b7fa9-e1a6-4630-966e-c8c7e557166d",
+    "name": "弹幕语音姬",
+    "description": "朗读语音",
+    "preview": [],
+    "version": "0.0.1",
+    "type": 0,
+    "externalWindow": "./externalWindow.vue",
+    "externalWindowOption": {
+      "width": 320,
+      "height": 420
+    },
+    "permissions": [
+      "Platform.BiliBili.API.sendRoomMessage"
+    ],
+    "defaultConfig": {
+      "windowX": null,
+      "windowY": null
+    }
+  }
