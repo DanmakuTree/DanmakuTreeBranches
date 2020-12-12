@@ -47,7 +47,8 @@ export default {
             mikelist: mikejson.mikelist,
             mikeword: mikejson.mikeword,
             nightCheck: true,
-            nightDisable: false
+            nightDisable: false,
+            giftMap: {}
         }
     },
     danmaku: {
@@ -89,10 +90,11 @@ export default {
                 if (that.superchatCheck) { that.speak(text) }
             }
             if (d.type === 'gift' && d.data.gift.coinType === 'gold') {
-                text = `感谢${d.data.user.username}投喂的${d.data.gift.giftName}，啾咪`
+                // text = `感谢${d.data.user.username}投喂的${d.data.gift.giftName}，啾咪`
                 if (mikeExists(d.data.user.uid)) {return false}
-                if (nightMode()) {text='谢谢礼物'}
-                if (that.giftCheck) { that.speak(text) }
+                // if (nightMode()) {text='谢谢礼物'}
+                // if (that.giftCheck) { that.speak(text) }
+                if (that.giftCheck) {that.thanksGift(d.data.user.uid,d.data.user.username,d.data.gift.giftName,nightMode())}
             }
         }
     },
@@ -169,6 +171,20 @@ gift: ${this.giftCheck}
             this.superchatCheck = true
             this.giftCheck = true
             this.nightDisable = false
+        },
+        thanksGift(uid, username, giftName, nightMode){
+            var that = this
+            if (!this.giftMap[uid]) {
+                that.giftMap[uid] = []
+                setTimeout(()=>{
+                    // Joseph's answer, reference: https://stackoverflow.com/questions/15069587/is-there-a-way-to-join-the-elements-in-an-js-array-but-let-the-last-separator-b
+                    var text = `感谢${username}投喂的${that.giftMap[uid].join(', ').replace(/, ([^,]*)$/, ' 和 $1')}，啾咪`
+                    if (nightMode) { text = '谢谢礼物' }
+                    that.speak(text)
+                    delete that.giftMap[uid]
+                }, 15000)
+            }
+            if (that.giftMap[uid].includes(giftName) === false) { that.giftMap[uid].push(giftName); }
         }
     }
 }
