@@ -3,6 +3,8 @@
         <p>
             弹幕播报
             <a-switch v-model="msgCheck" @change="onChange" checked-children="播报弹幕" un-checked-children="关闭播报" />
+            <button v-on:click="offCheck" style="color:white;background-color:red">关闭全部播报</button>
+            <button v-on:click="defaultCheck" style="color:white;background-color:green">默认</button>
         </p>
         <p>
             舰长进场播报
@@ -16,7 +18,14 @@
             醒目留言播报
             <a-switch v-model="superchatCheck" @change="onChange" checked-children="播报醒目留言" un-checked-children="关闭播报" />
         </p>
-        <p><button v-on:click="testVoice">点我测试语音姬</button></p>
+        <p>
+            <button v-on:click="testVoice">点我测试语音姬</button>
+            <button v-on:click="cancelVoice" style="color:white;background-color:orange">终止语音</button>
+        </p>
+        <p id="nightSwitch">
+            夜间模式 (1am-7am)
+            <a-switch v-model="nightCheck" :disabled="nightDisable" @change="onChange" checked-children="夜间低扰" un-checked-children="正常播报" />
+        </p>
         <p>目前系统上可以使用的语音包有</p>
         <ul>
             <li v-for="voice in voicesTTS" :key="voice.name">
@@ -36,7 +45,9 @@ export default {
             superchatCheck: true,
             giftCheck: true,
             mikelist: mikejson.mikelist,
-            mikeword: mikejson.mikeword
+            mikeword: mikejson.mikeword,
+            nightCheck: true,
+            nightDisable: false
         }
     },
     danmaku: {
@@ -51,25 +62,36 @@ export default {
                 return (that.mikelist.indexOf(num) !== -1)
             }
 
+            function nightMode(){
+                var today = new Date();
+                var hour = today.getHours()
+                var inDuration = (1<=hour) && (hour<=7)
+                return inDuration && that.nightCheck
+            }
+
             // todo: message should be cancel, with a turn off switch
             if (!d.data.isLotteryAutoMsg && d.type === 'message') {
                 text = `${d.data.comment}`
                 if (mikeExists(d.data.user.uid)) {return false}  
+                // if (nightMode()) {text='晚上好'}
                 if (that.msgCheck) { that.speak(text) }
             }
             if (d.type === 'welcomeRoomVIP') {
                 text = `前方舰长${d.data.user.name}鲨过来了！`
                 if (mikeExists(d.data.user.uid)) {return false}
+                if (nightMode()) {text=`欢迎${d.data.user.name}`}
                 if (that.guardCheck) { that.speak(text) }
             }
             if (d.type === 'superchat') {
                 text = `收到${d.data.user.username}的SC：${d.data.comment}`
                 if (mikeExists(d.data.user.uid)) {return false}
+                if (nightMode()) {text='谢谢SC'}
                 if (that.superchatCheck) { that.speak(text) }
             }
             if (d.type === 'gift' && d.data.gift.coinType === 'gold') {
                 text = `感谢${d.data.user.username}投喂的${d.data.gift.giftName}，啾咪`
                 if (mikeExists(d.data.user.uid)) {return false}
+                if (nightMode()) {text='谢谢礼物'}
                 if (that.giftCheck) { that.speak(text) }
             }
         }
@@ -78,8 +100,8 @@ export default {
     },
     mounted () {
         var that = this
-
-        setTimeout(()=>{that.getVoices()},3000)   
+        this.speak('')
+        setTimeout(()=>{that.getVoices()},1000)
     },
     methods: {
         speak(msg, lang='zh-CN', voice) { 
@@ -104,6 +126,7 @@ export default {
             this.voicesTTS = voices
         },
         onChange() {
+            this.nightDisable = !this.msgCheck && !this.guardCheck && !this.superchatCheck && !this.giftCheck
             console.log(`
 msg: ${this.msgCheck}
 guard: ${this.guardCheck}
@@ -127,7 +150,32 @@ gift: ${this.giftCheck}
             // this.speak('目前我的语言模板技能是恶魔Ki丽叩撒嘛教会我的，很感谢她！')
             // this.speak('Ki丽叩!Ki丽叩!发出了单推的叫声')
             this.speak('我正在学习其他的技能和多语言切换，希望我早点升级我自己')
+        },
+        cancelVoice() {
+            var synth = window.speechSynthesis;
+            synth.cancel();
+        },
+        offCheck() {
+            this.cancelVoice()
+            this.msgCheck = false
+            this.guardCheck = false
+            this.superchatCheck = false
+            this.giftCheck = false
+            this.nightDisable = true
+        },
+        defaultCheck() {
+            this.msgCheck = false
+            this.guardCheck = true
+            this.superchatCheck = true
+            this.giftCheck = true
+            this.nightDisable = false
         }
     }
 }
 </script>
+
+<style scoped>
+    #nightSwitch .ant-switch-checked{
+        background-color: blueviolet;
+    }
+</style>
