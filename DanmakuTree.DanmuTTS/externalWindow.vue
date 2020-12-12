@@ -48,7 +48,9 @@ export default {
             mikeword: mikejson.mikeword,
             nightCheck: true,
             nightDisable: false,
-            giftMap: {}
+            giftMap: {},
+            guardHourMap: {},
+            giftHourMap: {}
         }
     },
     danmaku: {
@@ -81,6 +83,7 @@ export default {
                 text = `前方舰长${d.data.user.name}鲨过来了！`
                 if (mikeExists(d.data.user.uid)) {return false}
                 if (nightMode()) {text=`欢迎${d.data.user.name}`}
+                if (that.guardHour(d.data.user.uid)==='block') {return false}
                 if (that.guardCheck) { that.speak(text) }
             }
             if (d.type === 'superchat') {
@@ -106,7 +109,7 @@ export default {
         setTimeout(()=>{that.getVoices()},1000)
     },
     methods: {
-        speak(msg, lang='zh-CN', voice) { 
+        speak(msg, lang='zh-CN', voice, rate) { 
             var synth = window.speechSynthesis;
             let u = new SpeechSynthesisUtterance();
             u.lang = lang;
@@ -114,6 +117,7 @@ export default {
             u.pitch = 2;
             u.rate = 2;
             if (voice) {u.voice = voice}
+            if (rate) {u.rate = rate}
             synth.speak(u);
         },
         getVoices() {
@@ -180,11 +184,43 @@ gift: ${this.giftCheck}
                     // Joseph's answer, reference: https://stackoverflow.com/questions/15069587/is-there-a-way-to-join-the-elements-in-an-js-array-but-let-the-last-separator-b
                     var text = `感谢${username}投喂的${that.giftMap[uid].join(', ').replace(/, ([^,]*)$/, ' 和 $1')}，啾咪`
                     if (nightMode) { text = '谢谢礼物' }
+                    if (that.giftHour(uid) > 3) {
+                        text = `谢谢${that.giftMap[uid].join(', ').replace(/, ([^,]*)$/, ' 和 $1')}，啾咪`
+                    }
                     that.speak(text)
                     delete that.giftMap[uid]
                 }, 15000)
             }
             if (that.giftMap[uid].includes(giftName) === false) { that.giftMap[uid].push(giftName); }
+        },
+        guardHour(uid) {
+            var that = this
+            if (!this.guardHourMap[uid]) {
+                that.guardHourMap[uid] = true
+                setTimeout(()=>{
+                    delete that.guardHourMap[uid]
+                }, 60*60000)
+                return false
+            }
+            else {
+                return 'block'
+            }
+        },
+        giftHour(uid) {
+            var that = this
+            if (!this.giftHourMap[uid]) {
+                that.giftHourMap[uid] = 1
+                setTimeout(() => {
+                    delete that.giftHourMap[uid]
+                }, 20*60000);
+                return 1
+            }
+            else {
+                var prevCount = that.giftHourMap[uid]
+                var currCount = prevCount + 1 
+                that.giftHourMap[uid] = currCount
+                return currCount
+            }
         }
     }
 }
