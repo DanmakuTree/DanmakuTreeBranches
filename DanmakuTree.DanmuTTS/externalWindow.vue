@@ -67,7 +67,7 @@
         giftCheck: true,
         mikelist: mikejson.mikelist,
         mikeword: mikejson.mikeword,
-        nightCheck: true,
+        nightCheck: false,
         nightDisable: false,
         giftMap: {},
         guardHourMap: {},
