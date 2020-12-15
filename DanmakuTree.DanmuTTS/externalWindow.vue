@@ -80,7 +80,7 @@
         var that = this
 
         var e = msg
-        var d = msg.data
+        var d = e.data
 
         function mikeExists (num) {
           return (that.mikelist.indexOf(num) !== -1)
@@ -146,7 +146,7 @@
         var voices = synth.getVoices().sort(function (a, b) {
           const aname = a.name.toUpperCase(); const bname = b.name.toUpperCase()
           if (aname < bname) return -1
-          else if (aname == bname) return 0
+          else if (aname === bname) return 0
           else return +1
         })
         console.log('Show and list the voices on your system:', voices)
