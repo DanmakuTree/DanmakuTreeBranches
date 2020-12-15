@@ -185,7 +185,7 @@
       this.getMainRoom()
       this.getFollower()
       this.getMikeJsonUpdate()
-      setInterval(() => { console.log('set top'); this.$currentWindow.moveTop() }, 1000)
+      // This line will force to set top the window. Use with care. // setInterval(() => { console.log('set top'); this.$currentWindow.moveTop() }, 1000)
       this.vWindow.lowY = this.dModuleConfig.windowY // - this.vWindow.height
     },
     methods: {
