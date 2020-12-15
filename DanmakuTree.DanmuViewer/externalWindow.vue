@@ -114,7 +114,7 @@
             medal = `[${d.data.user.medal.label} ${d.data.user.medal.level}] `
           }
           text = `%username=${d.data.user.username}% : ${d.data.comment}`
-          if ( medal && (medal !== '[ 0] ')) { text = medal + text }
+          if (medal && (medal !== '[ 0] ')) { text = medal + text }
           text = '收到了一条SC，' + text
         }
         if (d.type === 'guardbuy') {
@@ -217,24 +217,23 @@
           if (!that.moving) { that.debounceFlex() }
         }, 800)
       },
-      getMikeJsonUpdate () { 
+      getMikeJsonUpdate () {
         var that = this
         var _interval, _addr
-        this.$main.isDev().then((res)=>{
+        this.$main.isDev().then((res) => {
           that.isDev = res
-          _interval = res ? 30*1000 : 3*60000
+          _interval = res ? 30 * 1000 : 3 * 60000
           _addr = res ? 'https://cdn.jsdelivr.net/gh/ax4/dmv-isDev/mike.json' : 'https://raw.githubusercontent.com/DanmakuTree/DanmakuTreeBranches/master/DanmakuTree.DanmuViewer/mike.json'
-          setInterval(function(){
-            window.fetch(_addr).then(res=>res.json())
-            .then((_mikejson)=>{
-              that.mikelist = _mikejson.mikelist
-              that.mikeword = _mikejson.mikeword
-              console.log(_mikejson)
-            })
-            .catch(console.warn)
+          setInterval(function () {
+            window.fetch(_addr).then(res => res.json())
+              .then((_mikejson) => {
+                that.mikelist = _mikejson.mikelist
+                that.mikeword = _mikejson.mikeword
+                console.log(_mikejson)
+              })
+              .catch(console.warn)
           }, _interval)
         })
-
       },
       displayLog (text) {
         this.log = text
