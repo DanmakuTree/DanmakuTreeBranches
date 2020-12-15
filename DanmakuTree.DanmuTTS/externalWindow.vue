@@ -108,9 +108,9 @@
           if (that.guardCheck) { that.speak(text) }
         }
         if (d.type === 'superchat') {
-          text = `收到${d.data.user.username}的SC：${d.data.comment}`
+          text = `收到${d.data.user.username}的Super Chat说：${d.data.comment}`
           if (mikeExists(d.data.user.uid)) { return false }
-          if (nightMode()) { text = '谢谢SC' }
+          if (nightMode()) { text = `谢谢Super Chat: ${d.data.comment}` }
           if (that.superchatCheck) { that.speak(text) }
         }
         if (d.type === 'gift' && d.data.gift.coinType === 'gold') {
@@ -204,7 +204,7 @@ gift: ${this.giftCheck}
           setTimeout(() => {
             // Joseph's answer, reference: https://stackoverflow.com/questions/15069587/is-there-a-way-to-join-the-elements-in-an-js-array-but-let-the-last-separator-b
             var text = `感谢${username}投喂的${that.giftMap[uid].join(', ').replace(/, ([^,]*)$/, ' 和 $1')}，啾咪`
-            if (nightMode) { text = '谢谢礼物' }
+            if (nightMode) { text = `谢谢${username}的${that.giftMap[uid].join(', ').replace(/, ([^,]*)$/, ' 和 $1')}` }
             if (that.giftHour(uid) > 3) {
               text = `谢谢${that.giftMap[uid].join(', ').replace(/, ([^,]*)$/, ' 和 $1')}，啾咪`
             }
