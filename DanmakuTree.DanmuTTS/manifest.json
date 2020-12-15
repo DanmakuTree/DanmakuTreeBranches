@@ -4,7 +4,7 @@
     "name": "弹幕语音姬",
     "description": "朗读语音 | 自0.0.3修复礼物刷屏",
     "preview": [],
-    "version": "0.0.3.a",
+    "version": "0.0.3.b",
     "type": 0,
     "externalWindow": "./externalWindow.vue",
     "externalWindowOption": {
