@@ -4,7 +4,7 @@
   "name": "快速弹幕栏",
   "description": "可以快速发送弹幕的悬浮窗口",
   "preview": [],
-  "version": "0.0.2",
+  "version": "0.0.3",
   "type": 0,
   "embed": "./embed.vue",
   "externalWindow": "./externalWindow.vue",

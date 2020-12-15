@@ -39,6 +39,15 @@
         if (this.debounceMove) {
           this.debounceMove()
         }
+      },
+      'Main.mainRoomUpdate' (msg) {
+        this.mainRoom = msg.new
+        this.normal = `当前房间: ${this.mainRoom.platform} ${this.mainRoom.roomId}`
+        if (supportPlatform.indexOf(this.mainRoom.platform) !== -1) {
+        } else {
+          this.normal = this.normal + ' 暂不支持的平台'
+        }
+        this.log = this.normal
       }
     },
     computed: {
