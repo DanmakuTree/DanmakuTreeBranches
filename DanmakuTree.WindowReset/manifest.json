@@ -1,0 +1,13 @@
+{
+  "$schema": "https://raw.githubusercontent.com/DanmakuTree/DanmakuTreeTool/master/manifest.schema.json",
+  "id": "22133289-a1f7-4961-b0bb-7814714ceda0",
+  "name": "窗口重置管理器",
+  "description": "用于解决窗口不见类型的问题，重新设置窗口",
+  "preview": [],
+  "version": "0.0.1-alpha",
+  "type": 0,
+  "embed": "./embed.vue",
+  "permissions": [
+    "Platform.BiliBili.API.sendRoomMessage"
+  ]
+}
