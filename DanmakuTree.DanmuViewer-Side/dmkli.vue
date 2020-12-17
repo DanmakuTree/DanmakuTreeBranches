@@ -31,7 +31,7 @@
 // on the topic of correctly export the component
   export default {
     render: function (createElement) {
-      return createElement('li', this.str2dom(this.$slots.default[0].text, createElement))
+      return this.li(createElement)
     },
     // props: {
     //   key: {
@@ -60,6 +60,9 @@
             return el
           }
         })
+      },
+      li (h) {
+        return h('li', this.str2dom(this.$slots.default[0].text, h))
       }
     }
   }
