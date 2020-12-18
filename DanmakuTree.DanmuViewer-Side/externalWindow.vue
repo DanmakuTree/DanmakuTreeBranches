@@ -359,14 +359,14 @@ body{
 }
 .list-enter /*, .list-leave-to /* .list-leave-active below version 2.1.8 */ {
   opacity: 0;
-  transform: translateY(28px);
+  transform: translateY(-14px);
 }
 .list-leave-active {
   transition: all 0.8s;
 }
 .list-leave-to {
   opacity: 0;
-  transform: translateY(-28px);
+  transform: translateY(28px);
 }
 /* ::-webkit-scrollbar {         display: none;       } */
 </style>

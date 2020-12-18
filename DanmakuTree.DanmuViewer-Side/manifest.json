@@ -4,7 +4,7 @@
     "name": "[辅助]侧边弹幕栏",
     "description": "增加一个额外的侧边弹幕栏。给Kirikosama_用的, 祝KK直播两周年快乐！感谢KK一直以来对弹幕树使用提供的意见反馈和支持！",
     "preview": [],
-    "version": "2020.12.15.a",
+    "version": "2020.12.15.b",
     "type": 0,
     "externalWindow": "./externalWindow.vue",
     "externalWindowOption": {
