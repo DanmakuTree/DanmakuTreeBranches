@@ -4,7 +4,7 @@
   "name": "窗口重置管理器",
   "description": "用于解决窗口不见类型的问题，重新设置窗口",
   "preview": [],
-  "version": "0.0.1-alpha",
+  "version": "0.0.1-beta",
   "type": 0,
   "embed": "./embed.vue",
   "permissions": [
