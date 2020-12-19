@@ -30,8 +30,8 @@
         modules: [
           { id: '84f22a8f-61a2-4ee2-aba2-db964ed86a4f', title: '简单弹幕视图重置' },
           { id: 'd4977bd5-ca1a-492d-ac58-2eeb90afa188', title: '[辅助]侧边弹幕栏重置' },
-          { id: '63d9c897-f98f-498c-9472-5f6a7910a976', title: '2077弹幕视图' } //,
-          // { id: '352b7fa9-e1a6-4630-966e-c8c7e557166d', title: '弹幕语音姬' }
+          { id: '63d9c897-f98f-498c-9472-5f6a7910a976', title: '2077弹幕视图' },
+          { id: '352b7fa9-e1a6-4630-966e-c8c7e557166d', title: '弹幕语音姬' }
         ]
       }
     },
@@ -66,5 +66,8 @@
 <style>
 .container {
   padding: 8px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
 }
 </style>
