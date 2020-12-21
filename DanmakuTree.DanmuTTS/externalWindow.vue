@@ -128,6 +128,8 @@
       var that = this
       this.speak('')
       setTimeout(() => { that.getVoices() }, 1000)
+      // window.API.CurrentWindow.setTitle('弹幕语音姬')
+      this.setTitle('弹幕语音姬')
     },
     methods: {
       speak (msg, lang = 'zh-CN', voice, rate) {
@@ -240,6 +242,9 @@ gift: ${this.giftCheck}
           that.giftHourMap[uid] = currCount
           return currCount
         }
+      },
+      setTitle (str) {
+        this.$currentWindow.setTitle(str)
       }
     }
   }
