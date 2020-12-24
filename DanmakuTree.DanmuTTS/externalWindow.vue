@@ -105,7 +105,7 @@
         }
 
         function ChristmasMode () {
-          return that.ChristmasCheck
+          return that.ChristmasCheck === true
         }
 
         // todo: message should be cancel, with a turn off switch
