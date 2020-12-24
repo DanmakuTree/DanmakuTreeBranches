@@ -47,6 +47,16 @@
         checked-children="夜间低扰"
         un-checked-children="正常播报" />
     </p>
+    <p id="ChristmasSwitch">
+
+      圣诞模式 (新版本开启中)
+      <a-switch
+        v-model="ChristmasCheck"
+        @change="onChange"
+        checked-children="Merry Christmas"
+        un-checked-children="正常播报" />
+
+    </p>
     <p>目前系统上可以使用的语音包有</p>
     <ul>
       <li v-for="voice in voicesTTS" :key="voice.name">
@@ -69,6 +79,7 @@
         mikeword: mikejson.mikeword,
         nightCheck: false,
         nightDisable: false,
+        ChristmasCheck: true,
         giftMap: {},
         guardHourMap: {},
         giftHourMap: {}
@@ -93,6 +104,10 @@
           return inDuration && that.nightCheck
         }
 
+        function ChristmasMode () {
+          return that.ChristmasCheck
+        }
+
         // todo: message should be cancel, with a turn off switch
         if (!d.data.isLotteryAutoMsg && d.type === 'message') {
           text = `${d.data.comment}`
@@ -104,6 +119,7 @@
           text = `前方舰长${d.data.user.name}鲨过来了！`
           if (mikeExists(d.data.user.uid)) { return false }
           if (nightMode()) { text = `欢迎${d.data.user.name}` }
+          if (ChristmasMode()) { text = `前方舰长${d.data.user.name}拖着亿村驯鹿鲨过来了！` }
           if (that.guardHour(d.data.user.uid) === 'block') { return false }
           if (that.guardCheck) { that.speak(text) }
         }
@@ -111,6 +127,7 @@
           text = `收到${d.data.user.username}的Super Chat说：${d.data.comment}`
           if (mikeExists(d.data.user.uid)) { return false }
           if (nightMode()) { text = `谢谢Super Chat: ${d.data.comment}` }
+          if (ChristmasMode()) { text = `收到${d.data.user.username}的Super Chat说：${d.data.comment}。Merry Merry Christmas!` }
           if (that.superchatCheck) { that.speak(text) }
         }
         if (d.type === 'gift' && d.data.gift.coinType === 'gold') {
@@ -118,7 +135,7 @@
           if (mikeExists(d.data.user.uid)) { return false }
           // if (nightMode()) {text='谢谢礼物'}
           // if (that.giftCheck) { that.speak(text) }
-          if (that.giftCheck) { that.thanksGift(d.data.user.uid, d.data.user.username, d.data.gift.giftName, nightMode()) }
+          if (that.giftCheck) { that.thanksGift(d.data.user.uid, d.data.user.username, d.data.gift.giftName, nightMode(), ChristmasMode()) }
         }
       }
     },
@@ -199,7 +216,7 @@ gift: ${this.giftCheck}
         this.giftCheck = true
         this.nightDisable = false
       },
-      thanksGift (uid, username, giftName, nightMode) {
+      thanksGift (uid, username, giftName, nightMode, ChristmasMode) {
         var that = this
         if (!this.giftMap[uid]) {
           that.giftMap[uid] = []
@@ -207,6 +224,7 @@ gift: ${this.giftCheck}
             // Joseph's answer, reference: https://stackoverflow.com/questions/15069587/is-there-a-way-to-join-the-elements-in-an-js-array-but-let-the-last-separator-b
             var text = `感谢${username}投喂的${that.giftMap[uid].join(', ').replace(/, ([^,]*)$/, ' 和 $1')}，啾咪`
             if (nightMode) { text = `谢谢${username}的${that.giftMap[uid].join(', ').replace(/, ([^,]*)$/, ' 和 $1')}` }
+            if (ChristmasMode) { text = `感谢${username}从烟囱扔下的${that.giftMap[uid].join(', ').replace(/, ([^,]*)$/, ' 和 $1')}，啾咪` }
             if (that.giftHour(uid) > 3) {
               text = `谢谢${that.giftMap[uid].join(', ').replace(/, ([^,]*)$/, ' 和 $1')}，啾咪`
             }
@@ -253,5 +271,9 @@ gift: ${this.giftCheck}
 <style scoped>
     #nightSwitch .ant-switch-checked{
         background-color: blueviolet;
+    }
+    #ChristmasSwitch .ant-switch-checked{
+        background-color: #CC231E;
+        background-image: repeating-linear-gradient(45deg,#F5624D,#F5624D 15px,#34A65F 0,#34A65F 30px);
     }
 </style>

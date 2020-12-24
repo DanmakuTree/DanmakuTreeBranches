@@ -2,9 +2,9 @@
     "$schema": "https://raw.githubusercontent.com/DanmakuTree/DanmakuTreeTool/master/manifest.schema.json",
     "id": "352b7fa9-e1a6-4630-966e-c8c7e557166d",
     "name": "弹幕语音姬",
-    "description": "朗读语音 | 自0.0.3修复礼物刷屏",
+    "description": "朗读语音 | 自0.0.3修复礼物刷屏 | d版本新支持圣诞节限定语音",
     "preview": [],
-    "version": "0.0.3.c",
+    "version": "0.0.3.d",
     "type": 0,
     "externalWindow": "./externalWindow.vue",
     "externalWindowOption": {
