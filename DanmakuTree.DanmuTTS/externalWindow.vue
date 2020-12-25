@@ -79,7 +79,7 @@
         mikeword: mikejson.mikeword,
         nightCheck: false,
         nightDisable: false,
-        ChristmasCheck: true,
+        ChristmasCheck: false,
         giftMap: {},
         guardHourMap: {},
         giftHourMap: {}
