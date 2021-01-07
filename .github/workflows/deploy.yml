@@ -54,4 +54,4 @@ jobs:
         github_token: ${{ secrets.GH_TOKEN }}
         directory: ./DanmakuTreeBackend
         repository: shugen002/DanmakuTreeBackend
-        branch: main
+        branch: master
