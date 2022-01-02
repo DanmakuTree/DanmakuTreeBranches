@@ -26,6 +26,7 @@
   import dmkli from './dmkli.vue'
   import { debounce } from 'lodash'
   import mikejson from './mike.json'
+  import emotionjson from './emotion.json'
   const supportPlatform = ['BiliBili']
   export default {
     components: {
@@ -60,6 +61,8 @@
         },
         mikelist: mikejson.mikelist,
         mikeword: mikejson.mikeword,
+        emotionWord: [],
+        emotionMap: {},
         isDev: null
       }
     },
@@ -98,6 +101,9 @@
 
         if (!d.data.isLotteryAutoMsg && d.type === 'message') {
           text = `%username=${d.data.user.username}% : ${d.data.comment}`
+          if (that.emotionWord.indexOf(d.data.comment)!==-1) {
+            text = `%username=${d.data.user.username}% : %emotion=${that.emotionMap[d.data.comment]}%`
+          }
           var medal = `[${d.data.user.medal.label} ${d.data.user.medal.level}] `
           if (medal !== '[ 0] ') { text = medal + text }
           if (mikeExists(d.data.user.uid)) { text = '' }
@@ -185,6 +191,8 @@
       this.getMainRoom()
       this.getFollower()
       this.getMikeJsonUpdate()
+      this.emotionWord = emotionjson.map(e=>e.emoji)
+      this.emotionMap = emotionjson.reduce((ac,cur)=>{ac[cur.emoji]=cur.url;return ac},{})
       // This line will force to set top the window. Use with care. // setInterval(() => { console.log('set top'); this.$currentWindow.moveTop() }, 1000)
       this.vWindow.lowY = this.dModuleConfig.windowY // - this.vWindow.height
     },

@@ -41,21 +41,31 @@
     // },
     methods: {
       str2dom (str, h) {
-        var re = /(%(username|warning)=.+?%)/g
+        var re = /(%(username|warning|emotion)=.+?%)/g
         return str.split(re).map((el) => {
           switch (el) {
           case 'username':
             return ''
           case 'warning':
             return ''
+          case 'emotion':
+            return ''
           default:
             break
           }
           var m = el.match(/%(.+)=(.+)%/)
           if (m) {
-            return h('span', {
-              attrs: { class: m[1] }
-            }, m[2])
+            var type = m[1] 
+            if (type==='emotion'){
+              return h('img', {
+                attrs: {src: m[2]}
+              })
+            }
+            else{
+              return h('span', {
+                attrs: { class: type }
+              }, m[2])
+            }
           } else {
             return el
           }
